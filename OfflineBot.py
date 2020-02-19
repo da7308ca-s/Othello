@@ -10,7 +10,7 @@ def read():
         while True:
                 line = process.stdout.readline()
                 stdout.append(line)
-                print(line)
+                print('The line', line)
                 if line == '' and p.poll() != None:
                         break
         return ''.join(stdout)
