@@ -12,7 +12,7 @@ def read():
                 stdout.append(line)
                 print(line)
         if line == '' and p.poll() != None:
-            break
+                break
         return ''.join(stdout)
 
 def write(msg):
