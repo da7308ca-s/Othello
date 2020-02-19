@@ -11,8 +11,8 @@ def read():
                 line = process.stdout.readline()
                 stdout.append(line)
                 print(line)
-        if line == '' and p.poll() != None:
-                break
+                if line == '' and p.poll() != None:
+                        break
         return ''.join(stdout)
 
 def write(msg):
