@@ -6,12 +6,15 @@ from time import sleep
 process = Popen("./othello", stdout=PIPE, stderr=PIPE, stdin=PIPE)
 
 def read():
-        return process.stdout.readline().decode()
+        return process.stdout.read().decode()
 
 def write(msg):
         process.stdin.write(str.encode(msg + "\n"))
         process.stdin.flush()
         print(msg)
+
+def loop(msg):
+
 
 def main():
         print(read())
