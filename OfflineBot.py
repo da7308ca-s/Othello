@@ -9,6 +9,7 @@ def read():
         msg = ""
         while True:
                 line = process.stdout.readline()
+                print(line)
                 if not line:
                         break
                 msg += line
