@@ -8,7 +8,7 @@ process = Popen("./othello", stdout=PIPE, stderr=PIPE, stdin=PIPE)
 def read():
         msg = ""
         while True:
-                line = proc.stdout.readline()
+                line = process.stdout.readline()
                 if not line:
                         break
                 msg += line
