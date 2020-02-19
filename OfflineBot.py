@@ -11,6 +11,7 @@ def read():
 def write(msg):
         process.stdin.write(str.encode(msg + "\n"))
         process.stdin.flush()
+        print(msg)
 
 def main():
         print(read())
