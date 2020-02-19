@@ -15,6 +15,10 @@ def main():
         print(read())
         write("da7308ca-s")
         print(read())
+        write("w")
+        print(read())
+        write("e6")
+        print(read())
   
 if __name__== "__main__":
         main()
