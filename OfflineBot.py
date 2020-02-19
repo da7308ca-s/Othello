@@ -8,8 +8,8 @@ def read():
         return process.stdout.readline().decode()
 
 def write(msg):
-        proc.stdin.write(str.encode(msg + "\n"))
-        proc.stdin.flush()
+        process.stdin.write(str.encode(msg + "\n"))
+        process.stdin.flush()
 
 def main():
         print(read())
