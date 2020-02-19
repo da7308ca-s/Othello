@@ -6,12 +6,10 @@ from time import sleep
 process = Popen("./othello", stdout=PIPE, stderr=PIPE, stdin=PIPE)
 
 def read():
-        msg = ""
-        msg += process.stdout.readline().decode()
-        msg += process.stdout.readline().decode()
-        msg += process.stdout.readline().decode()
-        msg += process.stdout.readline().decode()
-        return msg
+        print(process.stdout.readline().decode())
+        print(process.stdout.readline().decode())
+        print(process.stdout.readline().decode())
+        print(process.stdout.readline().decode())
 
 def write(msg):
         process.stdin.write(str.encode(msg + "\n"))
@@ -19,19 +17,13 @@ def write(msg):
         print(msg)
 
 def main():
-        print(read())
-        sleep(0.5)
+        read()
         write("da7308ca-s")
-        sleep(0.5)
-        print(read())
-        sleep(0.5)
+        read()
         write("w")
-        sleep(0.5)
-        print(read())
-        sleep(0.5)
+        read()
         write("e6")
-        sleep(0.5)
-        print(read())
+        read()
   
 if __name__== "__main__":
         main()
