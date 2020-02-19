@@ -2,7 +2,7 @@
 
 from subprocess import Popen, PIPE
 
-process = Popen("./othello", stdout=PIPE, stderr=PIPE)
+process = Popen("./othello", stdout=PIPE, stderr=PIPE, stdin=PIPE)
 
 def read():
         return process.stdout.readline().decode()
