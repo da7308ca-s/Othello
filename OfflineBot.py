@@ -1,6 +1,7 @@
-import numpy as np
-import subprocess
-import sys
+#!/usr/bin/env python
 
-proc = subprocess.Popen("./othello", shell=True,stdout=subprocess.PIPE, stdin=subprocess.PIPE)
-print("test")
+from subprocess import Popen, PIPE
+
+process = Popen(['cat', 'test.py'], stdout=PIPE, stderr=PIPE)
+stdout, stderr = process.communicate()
+print stdout
