@@ -14,7 +14,7 @@ def write(msg):
         print(msg)
 
 def loop(msg):
-
+        pass
 
 def main():
         print(read())
