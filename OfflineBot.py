@@ -76,7 +76,7 @@ def minimax(position,depth,maximizingPlayer):
 		for c in position.get_children():
 			evaluation = minimax(c,depth-1,True)
 			minEval = min(minEval,evaluation)
-		return maxEval
+		return minEval
 
 class Position:
 	def __init__(self):
