@@ -87,6 +87,7 @@ class Position:
 				if not self.board[rr][cc] == 0:
 					continue
 				isValid = False
+				print("Evaluating", (rr,cc))
 				for dir in range(8):
 					if isValid:
 						break
@@ -117,13 +118,15 @@ class Position:
 						if r>7 or r<0 or c>7 or c<0:
 							break
 						if self.board[r][c] == 0:
+							print(1)
 							break
 						elif self.board[r][c] == -player:
+							print(2)
 							hasOppositeColor = True
-						elif self.board[r][c] == player:
-							if hasOppositeColor:
-								isValid = True
-								break
+						elif self.board[r][c] == player and hasOppositeColor:
+							print(3)
+							isValid = True
+							break
 				if isValid:
 					newPos = Position(self.board)
 					newPos.place_piece(rr,cc)
