@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from subprocess import Popen, PIPE
+from prettytable import PrettyTable
 import numpy as np
 
 def read():
