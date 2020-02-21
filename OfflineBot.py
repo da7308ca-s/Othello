@@ -46,10 +46,10 @@ class Position:
 			elif self.board[i][move[1]] == -1:
 				print(3)
 				to_flip.append((i,move[1]))
-			if flip:
-				for coord in to_flip:
-					print(coord)
-					self.board[coord] = 1
+		if flip:
+			for coord in to_flip:
+				print(coord)
+				self.board[coord] = 1
 
 				
 		print("After flip")          
