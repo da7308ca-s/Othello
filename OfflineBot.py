@@ -20,6 +20,28 @@ def coord_to_text(coord):
 	s = "abcdefgh"
 	return str(coord[1] + 1) + s[coord[0]]
 
+def move_in_direction(r,c,direction):
+	if direction == 0: 
+		r-=1
+	elif direction == 1:
+		r-=1
+		c+=1
+	elif direction == 2:
+		c+=1
+	elif direction == 3:
+		r+=1
+		c+=1
+	elif direction == 4:
+		r+=1
+	elif direction == 5:
+		r+=1
+		c-=1
+	elif direction == 6:
+		c-=1
+	elif direction == 7:
+		r-=1
+		c-=1	
+
 class Position:
 	def __init__(self,board = None,player=1):
 		self.player = player
@@ -31,6 +53,7 @@ class Position:
 			self.board[4][4] = -1
 			self.board[3][4] = 1
 			self.board[4][3] = 1
+		self.valid_moves = self.calc_valid_moves()
 
 	def print_board(self):
 		print(self.board)
@@ -39,34 +62,15 @@ class Position:
 		self.board[move] = self.player
 		self.flip(move)
 		self.player = -self.player
+		self.valid_moves = self.calc_valid_moves()
 
 	def flip(self,move):
-		for dir in range(8):
+		for direction in range(8):
 			r,c = move	
 			to_flip = []
 			flip = False
 			for i in range(7):
-				if dir == 0: 
-					r-=1
-				elif dir == 1:
-					r-=1
-					c+=1
-				elif dir == 2:
-					c+=1
-				elif dir == 3:
-					r+=1
-					c+=1
-				elif dir == 4:
-					r+=1
-				elif dir == 5:
-					r+=1
-					c-=1
-				elif dir == 6:
-					c-=1
-				elif dir == 7:
-					r-=1
-					c-=1
-
+				move_in_direction(r,c,direction)
 				if r>7 or r<0 or c>7 or c<0:
 					break
 
@@ -81,9 +85,8 @@ class Position:
 				for coord in to_flip:
 					self.board[coord] = -self.board[coord]
 
-	def get_children(self):
-		player = self.player
-		children = []
+	def calc_valid_moves(self):
+		valid_moves = []
 		for rr in range(8):
 			for cc in range(8):
 				if not self.board[rr][cc] == 0:
@@ -121,25 +124,26 @@ class Position:
 							#print(0)
 							break
 						elif self.board[r][c] == 0:
-							#print("Looking at", r,c, "dir",direction,1,"i",i)
 							break
-						elif self.board[r][c] == -player:
-							#print("Looking at", r,c, "dir",direction, 2,"i", i)
+						elif self.board[r][c] == -self.player:
 							hasOppositeColor = True
-						elif self.board[r][c] == player:
+						elif self.board[r][c] == self.player:
 							if hasOppositeColor:
-								#print("Looking at", r,c, "dir",direction, 3,"i", i)
 								isValid = True
-								#print("Looking at", r,c, "dir",direction, 4,"i", i)
 							break
 						else:
 							print("wtf")
 				if isValid:
-					newPos = Position(deepcopy(self.board),deepcopy(self.player))
-					newPos.place_piece((rr,cc))
-					print("Evaluating", (rr,cc))
-					newPos.print_board()
-					children.append(newPos)
+					valid_moves.append((rr,cc))
+		return valid_moves
+
+	def get_children(self):
+		children = []
+		for move in self.valid_moves:
+			newPos = Position(deepcopy(self.board),deepcopy(self.player))
+			newPos.place_piece(move)
+			newPos.print_board()
+			children.append(newPos)
 		return children
 
 
