@@ -13,7 +13,7 @@ def write(msg):
 
 def text_to_coord(text):
         s = "abcdefgh"
-        return (s.index(text[0]), int(text[1]) - 1)
+        return (int(text[1]) - 1,s.index(text[0]))
 
 class Position:
         def __init__(self):
@@ -28,7 +28,7 @@ class Position:
 
         def place_piece(self,move,player):
                 move = text_to_coord(move)
-                self.board[move[1]][move[0]] = 1 if player == "d" else -1
+                self.board[move] = 1 if player == "d" else -1
                 self.print_board()
 
 def main(msg):
