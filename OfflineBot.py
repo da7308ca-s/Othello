@@ -16,12 +16,15 @@ def text_to_coord(text):
 	return (int(text[1]) - 1,s.index(text[0]))
 
 class Position:
-	def __init__(self):
-		self.board = np.zeros((8,8))
-		self.board[3][3] = -1
-		self.board[4][4] = -1
-		self.board[3][4] = 1
-		self.board[4][3] = 1
+	def __init__(self,board = None):
+		if board:
+			self.board = board
+		else:
+			self.board = np.zeros((8,8))
+			self.board[3][3] = -1
+			self.board[4][4] = -1
+			self.board[3][4] = 1
+			self.board[4][3] = 1
 
 	def print_board(self):
 		print(self.board)
@@ -29,13 +32,12 @@ class Position:
 	def place_piece(self,move,player):
 		move = text_to_coord(move)
 		self.board[move] = 1 if player == "d" else -1
-		print("Before flip")
-		self.print_board()	
-
 		self.flip(move, 1 if player == "d" else -1)
-
-		print("After flip")          
+		print("Board after move")      
 		self.print_board()
+		print("Children")
+		for c in get_children():
+			c.print_board()
 
 	def flip(self,move,player):
 		for dir in range(8):
@@ -77,6 +79,55 @@ class Position:
 			if flip:
 				for coord in to_flip:
 					self.board[coord] = -self.board[coord]
+
+	def get_children(self,player):
+		children = []
+		for rr in range(8):
+			for cc in range(8):
+				if not self.board[rr][cc] == 0:
+					continue
+				isValid = False
+				for dir in range(8):
+					if isValid:
+						break
+					r = rr
+					c = cc
+					for i in range(7):
+						hasOppositeColor = False;
+						if dir == 0: 
+							r-=1
+						elif dir == 1:
+							r-=1
+							c+=1
+						elif dir == 2:
+							c+=1
+						elif dir == 3:
+							r+=1
+							c+=1
+						elif dir == 4:
+							r+=1
+						elif dir == 5:
+							r+=1
+							c-=1
+						elif dir == 6:
+							c-=1
+						elif dir == 7:
+							r-=1
+							c-=1
+						if r>7 or r<0 or c>7 or c<0:
+							break
+						if self.board[r][c] == 0:
+							break
+						elif self.board[r][c] == -player:
+							hasOppositeColor = True
+						elif self.board[r][c] == player:
+							if hasOppositeColor:
+								isValid = True
+								break
+				if isValid:
+					newPos = Position(self.board)
+					newPos.place_piece(rr,cc)
+					children.append(newPos)
 
 
 def main(msg):
