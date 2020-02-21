@@ -44,17 +44,14 @@ def move_in_direction(r,c,direction):
 	return r,c
 
 class Position:
-	def __init__(self,board = None,player=1):
-		self.player = player
-		if board is not None:
-			self.board = board
-		else:
-			self.board = np.zeros((8,8))
-			self.board[3][3] = -1
-			self.board[4][4] = -1
-			self.board[3][4] = 1
-			self.board[4][3] = 1
-		self.valid_moves = self.calc_valid_moves()
+	def __init__(self):
+		self.player = 1
+		self.board = np.zeros((8,8))
+		self.board[3][3] = -1
+		self.board[4][4] = -1
+		self.board[3][4] = 1
+		self.board[4][3] = 1
+		self.valid_moves = self.calculate_valid_moves()
 
 	def print_board(self):
 		print(self.board)
@@ -63,7 +60,7 @@ class Position:
 		self.board[move] = self.player
 		self.flip(move)
 		self.player = -self.player
-		self.valid_moves = self.calc_valid_moves()
+		self.valid_moves = self.calculate_valid_moves()
 
 	def flip(self,move):
 		for direction in range(8):
@@ -74,7 +71,6 @@ class Position:
 				r,c = move_in_direction(r,c,direction)
 				if r>7 or r<0 or c>7 or c<0:
 					break
-
 				if self.board[r][c] == self.player:
 					flip = True
 					break
@@ -86,7 +82,7 @@ class Position:
 				for coord in to_flip:
 					self.board[coord] = -self.board[coord]
 
-	def calc_valid_moves(self):
+	def calculate_valid_moves(self):
 		valid_moves = []
 		for rr in range(8):
 			for cc in range(8):
@@ -100,27 +96,7 @@ class Position:
 					c = cc
 					hasOppositeColor = False
 					for i in range(7):
-						if direction == 0: 
-							r-=1
-						elif direction == 1:
-							r-=1
-							c+=1
-						elif direction == 2:
-							c+=1
-						elif direction == 3:
-							r+=1
-							c+=1
-						elif direction == 4:
-							r+=1
-						elif direction == 5:
-							r+=1
-							c-=1
-						elif direction == 6:
-							c-=1
-						elif direction == 7:
-							r-=1
-							c-=1
-
+						r,c = move_in_direction(r,c,direction)
 						if r>7 or r<0 or c>7 or c<0:
 							#print(0)
 							break
@@ -141,12 +117,11 @@ class Position:
 	def get_children(self):
 		children = []
 		for move in self.valid_moves:
-			newPos = Position(deepcopy(self.board),deepcopy(self.player))
+			newPos = deepcopy(self)
 			newPos.place_piece(move)
 			newPos.print_board()
 			children.append(newPos)
 		return children
-
 
 def main(msg):
 	print(msg)
