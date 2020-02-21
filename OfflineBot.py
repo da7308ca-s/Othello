@@ -16,7 +16,8 @@ def text_to_coord(text):
 	return (int(text[1]) - 1,s.index(text[0]))
 
 class Position:
-	def __init__(self,board = None):
+	def __init__(self,board = None,player=1):
+		self.player = player
 		if board is not None:
 			self.board = board
 		else:
@@ -29,16 +30,12 @@ class Position:
 	def print_board(self):
 		print(self.board)
 
-	def place_piece(self,move,player):
-		self.board[move] = 1 if player == "d" else -1
-		self.flip(move, 1 if player == "d" else -1)
-		print("Board after move")      
-		self.print_board()
-		print("Children")
-		for c in self.get_children(-1 if player == "d" else 1):
-			c.print_board()
+	def place_piece(self,move):
+		self.board[move] = self.player
+		self.flip(move)
+		self.player = -self.player
 
-	def flip(self,move,player):
+	def flip(self,move):
 		for dir in range(8):
 			r,c = move	
 			to_flip = []
@@ -68,18 +65,19 @@ class Position:
 				if r>7 or r<0 or c>7 or c<0:
 					break
 
-				if self.board[r][c] == player:
+				if self.board[r][c] == self.player:
 					flip = True
 					break
 				elif self.board[r][c] == 0:
 					break
-				elif self.board[r][c] == -player:
+				elif self.board[r][c] == -self.player:
 					to_flip.append((r,c))
 			if flip:
 				for coord in to_flip:
 					self.board[coord] = -self.board[coord]
 
-	def get_children(self,player):
+	def get_children(self):
+		player = -self.player
 		children = []
 		for rr in range(8):
 			for cc in range(8):
@@ -158,13 +156,17 @@ def main(msg):
 	elif msg == "my move\n":
 		move = text_to_coord(read())
 		print(move)
-		pos.place_piece(move,"d" if my_color == "w" else "w")
+		pos.place_piece(move)
+		pos.print_board()
+		print("Children")
+		for c in pos.get_children():
+			c.print_board()
 		main(read())
 	elif msg == "your move\n":
 		move = "d6"
 		write(move)
 		move = text_to_coord(move)
-		pos.place_piece(move,"w" if my_color == "w" else "d")
+		pos.place_piece(move)
 		main(read())
 	elif msg == "\"The game is finished\" White: \n":
 		print(read())
