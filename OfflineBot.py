@@ -45,9 +45,6 @@ def move_in_direction(r,c,direction):
 
 def choose_move(position,depth,maximizingPlayer):
 	move = None
-	children = position.get_children()
-	if len(children) == 0:
-		print("empty")
 	if maximizingPlayer:
 		maxEval = -65
 		for c in position.get_children():
@@ -61,7 +58,8 @@ def choose_move(position,depth,maximizingPlayer):
 			evaluation = minimax(c,depth,True,-65,65)
 			if evaluation<minEval:
 				minEval = evaluation
-				move = c.last_move	
+				move = c.last_move
+	print("Move", move)
 	return move
 
 def minimax(position,depth,maximizingPlayer,alpha,beta):
