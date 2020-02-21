@@ -30,30 +30,58 @@ class Position:
 		move = text_to_coord(move)
 		self.board[move] = 1 if player == "d" else -1
 		print("Before flip")
-		self.print_board()
-		to_flip = []
-		flip = False
-		#Check upwards
-		for i in range(move[0]-1,-1,-1):
-			print(i,move[1])
-			if self.board[i][move[1]] == 1:
-				print(1)
-				flip = True
-				break
-			elif self.board[i][move[1]] == 0:
-				print(2)
-				break
-			elif self.board[i][move[1]] == -1:
-				print(3)
-				to_flip.append((i,move[1]))
-		if flip:
-			for coord in to_flip:
-				print(coord)
-				self.board[coord] = 1
+		self.print_board()	
 
-				
+		self.flip(move, 1 if player == "d" else -1)
+
 		print("After flip")          
 		self.print_board()
+
+	def flip(self,move,player):
+		for dir in range(8):
+			r,c = move	
+			to_flip = []
+			flip = False
+			for i in range(7):
+				if dir == 0: 
+					r-=1
+				elif dir == 1:
+					r-=1
+					c+=1
+				elif dir == 2:
+					c+=1
+				elif dir == 3:
+					r+=1
+					c+=1
+				elif dir == 4:
+					r+=1
+				elif dir == 5:
+					r+=1
+					c-=1
+				elif dir == 6:
+					c-=1
+				elif dir == 7:
+					r-=1
+					c-=1
+
+				if r>7 or r<0 or c>7 or c<0:
+					break
+
+				if self.board[r][c] == player:
+					print(1)
+					flip = True
+					break
+				elif self.board[r][c] == 0:
+					print(2)
+					break
+				elif self.board[r][c] == -player:
+					print(3)
+					to_flip.append((r,c))
+			if flip:
+				for coord in to_flip:
+					print(coord)
+					self.board[coord] = -self.board[coord]
+
 
 def main(msg):
 	print(msg)
