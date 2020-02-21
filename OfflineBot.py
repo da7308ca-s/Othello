@@ -18,7 +18,7 @@ def text_to_coord(text):
 
 def coord_to_text(coord):
 	s = "abcdefgh"
-	return str(coord[1] + 1) + s[coord[0]]
+	return s[coord[1]] + str(coord[0] + 1)
 
 def move_in_direction(r,c,direction):
 	if direction == 0: 
