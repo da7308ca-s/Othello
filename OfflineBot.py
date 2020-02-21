@@ -48,6 +48,7 @@ def choose_move(position,depth,maximizingPlayer):
 	if maximizingPlayer:
 		maxEval = -65
 		for c in position.get_children():
+			c.print_board()
 			evaluation = minimax(c,depth,False,-65,65)
 			if evaluation>maxEval:
 				maxEval = evaluation
