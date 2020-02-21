@@ -49,7 +49,7 @@ def choose_move(position,depth,maximizingPlayer):
 		maxEval = -65
 		for c in position.get_children():
 			c.print_board()
-			c.last_move
+			pruint("last move",c.last_move)
 			evaluation = minimax(c,depth,False,-65,65)
 			if evaluation>maxEval:
 				maxEval = evaluation
