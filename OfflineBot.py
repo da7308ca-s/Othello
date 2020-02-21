@@ -36,7 +36,7 @@ class Position:
 		print("Board after move")      
 		self.print_board()
 		print("Children")
-		for c in self.get_children(1 if player == "d" else -1):
+		for c in self.get_children(-1 if player == "d" else 1):
 			c.print_board()
 
 	def flip(self,move,player):
