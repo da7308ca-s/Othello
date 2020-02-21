@@ -17,7 +17,7 @@ def text_to_coord(text):
 
 class Position:
         def __init__(self):
-                self.board = np.zeros(8,8)
+                self.board = np.zeros((8,8))
                 self.board[3][3] = -1
                 self.board[4][4] = -1
                 self.board[3][4] = 1
