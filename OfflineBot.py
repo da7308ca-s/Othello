@@ -77,7 +77,7 @@ class Position:
 					self.board[coord] = -self.board[coord]
 
 	def get_children(self):
-		player = -self.player
+		player = self.player
 		children = []
 		for rr in range(8):
 			for cc in range(8):
@@ -160,7 +160,7 @@ def main(msg):
 		pos.print_board()
 		print("Children")
 		children = pos.get_children()
-		print("Amound of children", len(children))
+		print("Amount of children", len(children))
 		for c in children:
 			c.print_board()
 		main(read())
