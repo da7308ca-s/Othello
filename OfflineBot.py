@@ -130,6 +130,8 @@ class Position:
 							print("Looking at", r,c,"dir",direction, 3,"i", i)
 							isValid = True
 							break
+						else:
+							print("wtf")
 				if isValid:
 					newPos = Position(self.board)
 					newPos.place_piece(rr,cc)
