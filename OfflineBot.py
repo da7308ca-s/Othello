@@ -31,11 +31,11 @@ class Position:
 		self.board[move] = 1 if player == "d" else -1
 		print("Before flip")
 		to_flip = []
-		flip = false
+		flip = False
 		#Check upwards
 		for i in range(move[0]+1,8):
 			if self.board[i][move[1]] == 1:
-				flip = true
+				flip = True
 				break
 			elif self.board[i][move[1]] == 0:
 				break
