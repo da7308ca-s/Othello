@@ -55,7 +55,7 @@ class Position:
 
 	def print_board(self):
 		print(self.board)
-		print(self.evaluate_position)
+		print(self.evaluate_position())
 
 	def place_piece(self,move):
 		self.board[move] = self.player
