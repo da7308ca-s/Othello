@@ -30,6 +30,7 @@ class Position:
 		move = text_to_coord(move)
 		self.board[move] = 1 if player == "d" else -1
 		print("Before flip")
+		self.print_board()
 		to_flip = []
 		flip = False
 		#Check upwards
@@ -46,9 +47,8 @@ class Position:
 					self.board[i][move[1]] = 1
 
 				
-		self.print_board()
 		print("After flip")          
-
+		self.print_board()
 
 def main(msg):
 	print(msg)
