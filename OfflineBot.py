@@ -197,12 +197,14 @@ def main(msg):
 		move = read()
 		print(move)
 		pos.place_piece(text_to_coord(move))
+		print("--Official--")
 		pos.print_board()
 		main(read())
 	elif msg == "your move\n":
 		move = choose_move(pos,depth,my_color=="d")
 		write(coord_to_text(move))
 		pos.place_piece(move)
+		print("--Official--")
 		pos.print_board()
 		main(read())
 	elif msg == "\"The game is finished\" White: \n":
