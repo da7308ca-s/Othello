@@ -17,7 +17,7 @@ def text_to_coord(text):
 
 class Position:
 	def __init__(self,board = None):
-		if not board == None:
+		if not board is None:
 			self.board = board
 		else:
 			self.board = np.zeros((8,8))
