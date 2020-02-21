@@ -151,7 +151,7 @@ def main(msg):
 		children = pos.get_children()
 		main(read())
 	elif msg == "your move\n":
-		move = "d6"
+		move = input()
 		write(move)
 		pos.place_piece(text_to_coord(move))
 		pos.print_board()
