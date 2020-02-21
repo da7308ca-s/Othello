@@ -131,7 +131,7 @@ class Position:
 						else:
 							print("wtf")
 				if isValid:
-					newPos = Position(self.board,self.player)
+					newPos = Position(copy(self.board),copy(self.player))
 					newPos.place_piece((rr,cc))
 					newPos.print_board()
 					children.append(newPos)
