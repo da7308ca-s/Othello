@@ -115,6 +115,8 @@ class Position:
 						elif dir == 7:
 							r-=1
 							c-=1
+
+						print("Looking at", r,c)
 						if r>7 or r<0 or c>7 or c<0:
 							print(0)
 							break
