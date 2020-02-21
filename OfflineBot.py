@@ -194,7 +194,7 @@ def main(msg):
 		pos.print_board()
 		main(read())
 	elif msg == "your move\n":
-		move = choose_move(pos,3,my_color="d")
+		move = choose_move(pos,3,my_color=="d")
 		write(coord_to_text(move))
 		pos.place_piece(move)
 		pos.print_board()
