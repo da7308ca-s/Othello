@@ -68,18 +68,14 @@ class Position:
 					break
 
 				if self.board[r][c] == player:
-					print(1)
 					flip = True
 					break
 				elif self.board[r][c] == 0:
-					print(2)
 					break
 				elif self.board[r][c] == -player:
-					print(3)
 					to_flip.append((r,c))
 			if flip:
 				for coord in to_flip:
-					print(coord)
 					self.board[coord] = -self.board[coord]
 
 
