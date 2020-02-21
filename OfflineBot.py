@@ -50,6 +50,7 @@ def choose_move(position,depth,maximizingPlayer):
 		for c in position.get_children():
 			c.print_board()
 			print("last move",c.last_move)
+			print("Game Over", c.game_over)
 			evaluation = minimax(c,depth,False,-65,65)
 			print("evaluation",evaluation,"maxEval",maxEval)
 			if evaluation>maxEval:
