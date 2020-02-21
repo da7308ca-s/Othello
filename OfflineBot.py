@@ -159,7 +159,7 @@ class Position:
 		for move in self.valid_moves:
 			newPos = deepcopy(self)
 			newPos.place_piece(move)
-			newPos.print_board()
+			#newPos.print_board()
 			children.append(newPos)
 		return children
 
