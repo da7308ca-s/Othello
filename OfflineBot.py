@@ -107,7 +107,7 @@ class Position:
 		self.player = -self.player
 		self.valid_moves = self.calculate_valid_moves()
 		if np.count_nonzero(self.board) == 64:
-			np.game_over == True
+			self.game_over == True
 
 	def flip(self,move):
 		for direction in range(8):
