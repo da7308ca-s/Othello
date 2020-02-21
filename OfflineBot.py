@@ -84,7 +84,7 @@ class Position:
 		children = []
 		for rr in range(8):
 			for cc in range(8):
-				if not self.board[rr][cc] == 0:
+				if self.board[rr][cc] == 0:
 					continue
 				isValid = False
 				print("Evaluating", (rr,cc))
