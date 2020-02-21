@@ -55,6 +55,7 @@ class Position:
 
 	def print_board(self):
 		print(self.board)
+		print(self.evaluate_position)
 
 	def place_piece(self,move):
 		self.board[move] = self.player
@@ -120,7 +121,6 @@ class Position:
 			newPos = deepcopy(self)
 			newPos.place_piece(move)
 			newPos.print_board()
-			print(self.evaluate_position())
 			children.append(newPos)
 		return children
 
