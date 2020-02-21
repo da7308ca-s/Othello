@@ -84,7 +84,7 @@ class Position:
 				if not self.board[rr][cc] == 0:
 					continue
 				isValid = False
-				#print("Evaluating", (rr,cc))
+				print("Evaluating", (rr,cc))
 				for direction in range(8):
 					if isValid:
 						break
@@ -133,6 +133,7 @@ class Position:
 				if isValid:
 					newPos = Position(self.board)
 					newPos.place_piece((rr,cc))
+					newPos.print_board()
 					children.append(newPos)
 		return children
 
@@ -159,10 +160,6 @@ def main(msg):
 		pos.print_board()
 		print("Children")
 		children = pos.get_children()
-		print("Amount of children", len(children))
-		for i, c in enumerate(children):
-			print("Child", i)
-			c.print_board()
 		main(read())
 	elif msg == "your move\n":
 		move = "d6"
