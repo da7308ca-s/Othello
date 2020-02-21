@@ -120,13 +120,13 @@ class Position:
 							print(0)
 							break
 						if self.board[r][c] == 0:
-							print("Looking at", r,c, "dir",direction,1)
+							print("Looking at", r,c, "dir",direction,1,"i",i)
 							break
 						elif self.board[r][c] == -player:
-							print("Looking at", r,c,"dir",direction, 2)
+							print("Looking at", r,c,"dir",direction, 2,"i", i)
 							hasOppositeColor = True
 						elif self.board[r][c] == player and hasOppositeColor:
-							print("Looking at", r,c,"dir",direction, 3)
+							print("Looking at", r,c,"dir",direction, 3,"i", i)
 							isValid = True
 							break
 				if isValid:
