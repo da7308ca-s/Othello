@@ -3,10 +3,6 @@
 from subprocess import Popen, PIPE
 import numpy as np
 
-process = Popen("./othello", stdout=PIPE, stderr=PIPE, stdin=PIPE)
-my_color = "w"
-pos = Position()
-
 def read():
         return process.stdout.readline().decode()
 
@@ -70,6 +66,10 @@ def main(msg):
                 print(read())
                 print(read())
                 print(read())
+
+process = Popen("./othello", stdout=PIPE, stderr=PIPE, stdin=PIPE)
+my_color = "w"
+pos = Position()
   
 if __name__== "__main__":
         main(read())
