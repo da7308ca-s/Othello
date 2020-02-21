@@ -49,12 +49,12 @@ def main(msg):
         elif msg == "my move\n":
                 move = read()
                 print(move)
-                place_piece(move)
+                pos.place_piece(move,"d" if my_color == "w" else "w")
                 main(read())
         elif msg == "your move\n":
                 move = "d6"
                 write(move)
-                place_piece(move)
+                pos.place_piece(move,"w" if my_color == "w" else "d")
                 main(read())
         elif msg == "\"The game is finished\" White: \n":
                 print(read())
