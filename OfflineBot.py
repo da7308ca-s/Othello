@@ -35,12 +35,16 @@ class Position:
 		flip = False
 		#Check upwards
 		for i in range(move[0]-1,-1,-1):
+			print(i,move[1])
 			if self.board[i][move[1]] == 1:
+				print(1)
 				flip = True
 				break
 			elif self.board[i][move[1]] == 0:
+				print(2)
 				break
-			elif self.board[i][move[1]] == -1: 
+			elif self.board[i][move[1]] == -1:
+				print(3)
 				to_flip.append((i,move[1]))
 			if flip:
 				for coord in to_flip:
