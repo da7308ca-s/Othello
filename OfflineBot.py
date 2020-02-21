@@ -48,6 +48,7 @@ class Position:
 				to_flip.append((i,move[1]))
 			if flip:
 				for coord in to_flip:
+					print(coord)
 					self.board[coord] = 1
 
 				
