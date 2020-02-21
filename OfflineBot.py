@@ -157,10 +157,10 @@ class Position:
 							print(r,c,0,"dir",direction,"i",i)
 							break
 						elif self.board[r][c] == -self.player:
-							print(r,c,1,"dir",direction,"i",i))
+							print(r,c,1,"dir",direction,"i",i)
 							hasOppositeColor = True
 						elif self.board[r][c] == self.player:
-							print(r,c,2,"dir",direction,"i",i))
+							print(r,c,2,"dir",direction,"i",i)
 							if hasOppositeColor:
 								isValid = True
 							break
