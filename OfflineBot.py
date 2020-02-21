@@ -6,7 +6,7 @@ process = Popen("./othello", stdout=PIPE, stderr=PIPE, stdin=PIPE)
 my_color = "w"
 
 def read():
-        return proc.stdout.readline().decode()
+        return process.stdout.readline().decode()
 
 def write(msg):
         process.stdin.write(str.encode(msg + "\n"))
