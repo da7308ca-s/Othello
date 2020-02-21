@@ -31,8 +31,10 @@ def main(msg):
         elif msg == "my move\n":
                 move = read()
                 print(move)
+                main(read())
         elif msg == "your move\n":
-                write("e6")
+                move = input("write move")
+                write(move)
                 main(read())
         elif msg == "\"The game is finished\" White: \n":
                 print(read())
