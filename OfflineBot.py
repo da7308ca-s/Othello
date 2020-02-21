@@ -120,8 +120,12 @@ class Position:
 			newPos = deepcopy(self)
 			newPos.place_piece(move)
 			newPos.print_board()
+			print(self.evaluate_position())
 			children.append(newPos)
 		return children
+
+	def evaluate_position(self):
+		return np.sum(self.board)
 
 def main(msg):
 	print(msg)
