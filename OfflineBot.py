@@ -43,6 +43,41 @@ def move_in_direction(r,c,direction):
 		c-=1
 	return r,c
 
+def choose_move(position,depth,maximizingPlayer):
+	move = None
+	if maximizingPlayer:
+		maxEval = -64
+		for c in position.get_children():
+			evaluation = minimax(c,depth,False)
+			if evaluation>maxEval:
+				maxEval = evaluation
+				move = c.last_move	
+	else
+		minEval = 64
+		for c in position.get_children():
+			evaluation = minimax(c,depth,True)
+			if evaluation<minEval:
+				minEval = evaluation
+				move = c.last_move	
+	return move
+
+def minimax(position,depth,maximizingPlayer):
+	if depth == 0 or position.game_over == True:
+		return position.evaluate_position()
+
+	if maximizingPlayer:
+		maxEval = -64
+		for c in position.get_children():
+			evaluation = minimax(c,depth-1,False)
+			maxEval = np.max(maxEval,evaluation)
+		return maxEval
+	else
+		minEval = 64
+		for c in position.get_children():
+			evaluation = minimax(c,depth-1,True)
+			minEval = np.min(minEval,evaluation)
+		return maxEval
+
 class Position:
 	def __init__(self):
 		self.player = 1
@@ -52,16 +87,21 @@ class Position:
 		self.board[3][4] = 1
 		self.board[4][3] = 1
 		self.valid_moves = self.calculate_valid_moves()
+		self.last_move = None
+		self.game_over = False
 
 	def print_board(self):
 		print(self.board)
 		print(self.evaluate_position())
 
 	def place_piece(self,move):
+		self.last_move = move
 		self.board[move] = self.player
 		self.flip(move)
 		self.player = -self.player
 		self.valid_moves = self.calculate_valid_moves()
+		if np.count_nonezero(self.board) == 64:
+			np.game_over == True
 
 	def flip(self,move):
 		for direction in range(8):
@@ -99,7 +139,6 @@ class Position:
 					for i in range(7):
 						r,c = move_in_direction(r,c,direction)
 						if r>7 or r<0 or c>7 or c<0:
-							#print(0)
 							break
 						elif self.board[r][c] == 0:
 							break
@@ -147,16 +186,12 @@ def main(msg):
 		print(move)
 		pos.place_piece(text_to_coord(move))
 		pos.print_board()
-		print("Children")
-		children = pos.get_children()
 		main(read())
 	elif msg == "your move\n":
-		move = "d6"
-		write(move)
-		pos.place_piece(text_to_coord(move))
+		move = choose_move(pos,4,False)
+		write(coord_to_text(move))
+		pos.place_piece(move)
 		pos.print_board()
-		print("Children")
-		children = pos.get_children()
 		main(read())
 	elif msg == "\"The game is finished\" White: \n":
 		print(read())
