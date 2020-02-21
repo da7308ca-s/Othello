@@ -94,7 +94,6 @@ class Position:
 					r = rr
 					c = cc
 					for i in range(7):
-						print("i", i)
 						hasOppositeColor = False;
 						if direction == 0: 
 							r-=1
