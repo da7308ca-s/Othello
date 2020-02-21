@@ -16,6 +16,10 @@ def text_to_coord(text):
 	s = "abcdefgh"
 	return (int(text[1]) - 1,s.index(text[0]))
 
+def coord_to_text(coord):
+	s = "abcdefgh"
+	return str(coord[1] + 1) + s[coord[0]]
+
 class Position:
 	def __init__(self,board = None,player=1):
 		self.player = player
@@ -85,7 +89,6 @@ class Position:
 				if not self.board[rr][cc] == 0:
 					continue
 				isValid = False
-				print("Evaluating", (rr,cc))
 				for direction in range(8):
 					if isValid:
 						break
@@ -134,6 +137,7 @@ class Position:
 				if isValid:
 					newPos = Position(deepcopy(self.board),deepcopy(self.player))
 					newPos.place_piece((rr,cc))
+					print("Evaluating", (rr,cc))
 					newPos.print_board()
 					children.append(newPos)
 		return children
@@ -155,9 +159,9 @@ def main(msg):
 		print(read())
 		print(read())
 	elif msg == "my move\n":
-		move = text_to_coord(read())
+		move = read()
 		print(move)
-		pos.place_piece(move)
+		pos.place_piece(text_to_coord(move))
 		pos.print_board()
 		print("Children")
 		children = pos.get_children()
@@ -165,8 +169,10 @@ def main(msg):
 	elif msg == "your move\n":
 		move = "d6"
 		write(move)
-		move = text_to_coord(move)
-		pos.place_piece(move)
+		pos.place_piece(text_to_coord(move))
+		pos.print_board()
+		print("Children")
+		children = pos.get_children()
 		main(read())
 	elif msg == "\"The game is finished\" White: \n":
 		print(read())
