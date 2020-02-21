@@ -40,7 +40,8 @@ def move_in_direction(r,c,direction):
 		c-=1
 	elif direction == 7:
 		r-=1
-		c-=1	
+		c-=1
+	return r,c
 
 class Position:
 	def __init__(self,board = None,player=1):
@@ -70,7 +71,7 @@ class Position:
 			to_flip = []
 			flip = False
 			for i in range(7):
-				move_in_direction(r,c,direction)
+				r,c = move_in_direction(r,c,direction)
 				if r>7 or r<0 or c>7 or c<0:
 					break
 
