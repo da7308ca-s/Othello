@@ -46,14 +46,14 @@ def move_in_direction(r,c,direction):
 def choose_move(position,depth,maximizingPlayer):
 	move = None
 	if maximizingPlayer:
-		maxEval = -64
+		maxEval = -65
 		for c in position.get_children():
 			evaluation = minimax(c,depth,False)
 			if evaluation>maxEval:
 				maxEval = evaluation
 				move = c.last_move	
 	else:
-		minEval = 64
+		minEval = 65
 		for c in position.get_children():
 			evaluation = minimax(c,depth,True)
 			if evaluation<minEval:
@@ -61,21 +61,27 @@ def choose_move(position,depth,maximizingPlayer):
 				move = c.last_move	
 	return move
 
-def minimax(position,depth,maximizingPlayer):
+def minimax(position,depth,maximizingPlayer,alpha,beta):
 	if depth == 0 or position.game_over == True:
 		return position.evaluate_position()
 
 	if maximizingPlayer:
-		maxEval = -64
+		maxEval = -65
 		for c in position.get_children():
-			evaluation = minimax(c,depth-1,False)
+			evaluation = minimax(c,depth-1,False,alpha,beta)
 			maxEval = max(maxEval,evaluation)
+			alpha = max(alpha,evaluation)
+			if beta<=alpha
+				break
 		return maxEval
 	else:
-		minEval = 64
+		minEval = 65
 		for c in position.get_children():
-			evaluation = minimax(c,depth-1,True)
+			evaluation = minimax(c,depth-1,True,alpha,beta)
 			minEval = min(minEval,evaluation)
+			beta = min(beta,evaluation)
+			if beta<=alpha
+				break
 		return minEval
 
 class Position:
@@ -188,7 +194,7 @@ def main(msg):
 		pos.print_board()
 		main(read())
 	elif msg == "your move\n":
-		move = choose_move(pos,3,False)
+		move = choose_move(pos,3,False,-65,65)
 		write(coord_to_text(move))
 		pos.place_piece(move)
 		pos.print_board()
