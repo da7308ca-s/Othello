@@ -128,6 +128,7 @@ class Position:
 					newPos = Position(self.board)
 					newPos.place_piece(rr,cc)
 					children.append(newPos)
+		return children
 
 
 def main(msg):
