@@ -94,6 +94,7 @@ class Position:
 					r = rr
 					c = cc
 					for i in range(7):
+						print("i", i)
 						hasOppositeColor = False;
 						if direction == 0: 
 							r-=1
@@ -119,7 +120,7 @@ class Position:
 						if r>7 or r<0 or c>7 or c<0:
 							print(0)
 							break
-						if self.board[r][c] == 0:
+						elif self.board[r][c] == 0:
 							print("Looking at", r,c, "dir",direction,1,"i",i)
 							break
 						elif self.board[r][c] == -player:
