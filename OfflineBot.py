@@ -71,7 +71,7 @@ def minimax(position,depth,maximizingPlayer):
 			evaluation = minimax(c,depth-1,False)
 			maxEval = np.max(maxEval,evaluation)
 		return maxEval
-	else
+	else:
 		minEval = 64
 		for c in position.get_children():
 			evaluation = minimax(c,depth-1,True)
