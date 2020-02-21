@@ -33,7 +33,7 @@ class Position:
 		to_flip = []
 		flip = false
 		#Check upwards
-		for i in range(move[0]+1,8)
+		for i in range(move[0]+1,8):
 			if self.board[i][move[1]] == 1:
 				flip = true
 				break
