@@ -51,6 +51,7 @@ def choose_move(position,depth,maximizingPlayer):
 			c.print_board()
 			print("last move",c.last_move)
 			print("Game Over", c.game_over)
+			print("valid_moves", c.valid_moves)
 			evaluation = minimax(c,depth,False,-65,65)
 			print("evaluation",evaluation,"maxEval",maxEval)
 			if evaluation>maxEval:
