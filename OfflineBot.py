@@ -16,12 +16,12 @@ def write(msg):
 def main(msg):
         print(msg)
         if str(msg) == "hi! I am your othello server.\n":
-                send('da7308ca-s')
+                write('da7308ca-s')
                 print(read())
                 print(read())
                 main(read())
         elif msg == "choose colour, 'd' for dark, 'w' for white.\n":
-                send(my_color)
+                write(my_color)
                 print(read())
                 main(read())
         elif msg == "The game is finished\n":
@@ -32,7 +32,7 @@ def main(msg):
                 move = read()
                 print(move)
         elif msg == "your move\n":
-                send("e6")
+                write("e6")
                 main(read())
         elif msg == "\"The game is finished\" White: \n":
                 print(read())
