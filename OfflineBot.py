@@ -28,7 +28,7 @@ class Position:
 
         def place_piece(self,move,player):
                 move = text_to_coord(move)
-                self.board[move[0]][move[1]] = 1 if player == "d" else -1
+                self.board[move[1]][move[0]] = 1 if player == "d" else -1
                 self.print_board()
 
 def main(msg):
