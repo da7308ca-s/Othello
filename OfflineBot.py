@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from subprocess import Popen, PIPE
+from copy import deepcopy
 import numpy as np
 
 def read():
@@ -131,7 +132,7 @@ class Position:
 						else:
 							print("wtf")
 				if isValid:
-					newPos = Position(copy(self.board),copy(self.player))
+					newPos = Position(deepcopy(self.board),deepcopy(self.player))
 					newPos.place_piece((rr,cc))
 					newPos.print_board()
 					children.append(newPos)
