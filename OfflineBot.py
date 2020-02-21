@@ -26,7 +26,7 @@ class Position:
 
 	def print_board(self):
 		for i in range(8):
-    		print '%-2i%-2i%-2i%-2i%-2i%-2i%-2i%-2i' % (self.board[i][0], self.board[i][1],self.board[i][2], self.board[i][3],self.board[i][4], self.board[i][5],self.board[i][6], self.board[i][7])
+    		print('%-2i%-2i%-2i%-2i%-2i%-2i%-2i%-2i' % (self.board[i][0], self.board[i][1],self.board[i][2], self.board[i][3], self.board[i][4], self.board[i][5], self.board[i][6], self.board[i][7]))
 
 		print(self.board)
 
