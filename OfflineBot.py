@@ -88,31 +88,31 @@ class Position:
 					continue
 				isValid = False
 				print("Evaluating", (rr,cc))
-				for dir in range(8):
+				for direction in range(8):
 					if isValid:
 						break
 					r = rr
 					c = cc
 					for i in range(7):
 						hasOppositeColor = False;
-						if dir == 0: 
+						if direction == 0: 
 							r-=1
-						elif dir == 1:
+						elif direction == 1:
 							r-=1
 							c+=1
-						elif dir == 2:
+						elif direction == 2:
 							c+=1
-						elif dir == 3:
+						elif direction == 3:
 							r+=1
 							c+=1
-						elif dir == 4:
+						elif direction == 4:
 							r+=1
-						elif dir == 5:
+						elif direction == 5:
 							r+=1
 							c-=1
-						elif dir == 6:
+						elif direction == 6:
 							c-=1
-						elif dir == 7:
+						elif direction == 7:
 							r-=1
 							c-=1
 
@@ -120,13 +120,13 @@ class Position:
 							print(0)
 							break
 						if self.board[r][c] == 0:
-							print("Looking at", r,c, "dir",dir,1)
+							print("Looking at", r,c, "dir",direction,1)
 							break
 						elif self.board[r][c] == -player:
-							print("Looking at", r,c,"dir",dir, 2)
+							print("Looking at", r,c,"dir",direction, 2)
 							hasOppositeColor = True
 						elif self.board[r][c] == player and hasOppositeColor:
-							print("Looking at", r,c,"dir",dir, 3)
+							print("Looking at", r,c,"dir",direction, 3)
 							isValid = True
 							break
 				if isValid:
