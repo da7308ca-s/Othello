@@ -48,7 +48,7 @@ class Position:
 				to_flip.append((i,move[1]))
 			if flip:
 				for coord in to_flip:
-					self.board[i][move[1]] = 1
+					self.board[coord] = 1
 
 				
 		print("After flip")          
