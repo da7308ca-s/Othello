@@ -126,7 +126,6 @@ class Position:
 							if hasOppositeColor:
 								#print("Looking at", r,c, "dir",direction, 3,"i", i)
 								isValid = True
-							else:
 								#print("Looking at", r,c, "dir",direction, 4,"i", i)
 							break
 						else:
