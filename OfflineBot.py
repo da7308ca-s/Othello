@@ -159,7 +159,9 @@ def main(msg):
 		pos.place_piece(move)
 		pos.print_board()
 		print("Children")
-		for c in pos.get_children():
+		children = pos.get_children()
+		print("Amound of children", len(children))
+		for c in children:
 			c.print_board()
 		main(read())
 	elif msg == "your move\n":
