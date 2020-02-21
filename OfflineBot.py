@@ -93,8 +93,8 @@ class Position:
 						break
 					r = rr
 					c = cc
+					hasOppositeColor = False;
 					for i in range(7):
-						hasOppositeColor = False;
 						if direction == 0: 
 							r-=1
 						elif direction == 1:
