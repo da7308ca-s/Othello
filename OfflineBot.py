@@ -45,6 +45,9 @@ def move_in_direction(r,c,direction):
 
 def choose_move(position,depth,maximizingPlayer):
 	move = None
+	children = position.get_children()
+	if len(children) == 0:
+		print("empty")
 	if maximizingPlayer:
 		maxEval = -65
 		for c in position.get_children():
