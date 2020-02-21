@@ -84,7 +84,7 @@ class Position:
 				if not self.board[rr][cc] == 0:
 					continue
 				isValid = False
-				print("Evaluating", (rr,cc))
+				#print("Evaluating", (rr,cc))
 				for direction in range(8):
 					if isValid:
 						break
@@ -114,20 +114,20 @@ class Position:
 							c-=1
 
 						if r>7 or r<0 or c>7 or c<0:
-							print(0)
+							#print(0)
 							break
 						elif self.board[r][c] == 0:
-							print("Looking at", r,c, "dir",direction,1,"i",i)
+							#print("Looking at", r,c, "dir",direction,1,"i",i)
 							break
 						elif self.board[r][c] == -player:
-							print("Looking at", r,c, "dir",direction, 2,"i", i)
+							#print("Looking at", r,c, "dir",direction, 2,"i", i)
 							hasOppositeColor = True
 						elif self.board[r][c] == player:
 							if hasOppositeColor:
-								print("Looking at", r,c, "dir",direction, 3,"i", i)
+								#print("Looking at", r,c, "dir",direction, 3,"i", i)
 								isValid = True
 							else:
-								print("Looking at", r,c, "dir",direction, 4,"i", i)
+								#print("Looking at", r,c, "dir",direction, 4,"i", i)
 							break
 						else:
 							print("wtf")
@@ -161,7 +161,8 @@ def main(msg):
 		print("Children")
 		children = pos.get_children()
 		print("Amount of children", len(children))
-		for c in children:
+		for i, c in enumerate(children):
+			print("Child", i)
 			c.print_board()
 		main(read())
 	elif msg == "your move\n":
