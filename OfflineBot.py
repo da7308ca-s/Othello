@@ -49,9 +49,6 @@ def choose_move(position,depth,maximizingPlayer):
 		maxEval = -65
 		for c in position.get_children():
 			c.print_board()
-			print("last move",c.last_move)
-			print("Game Over", c.game_over)
-			print("valid_moves", c.valid_moves)
 			evaluation = minimax(c,depth,False,-65,65)
 			print("evaluation",evaluation,"maxEval",maxEval)
 			if evaluation>maxEval:
@@ -104,6 +101,9 @@ class Position:
 		self.game_over = False
 
 	def print_board(self):
+		print("last move",self.last_move)
+		print("Game Over", self.game_over)
+		print("valid_moves", self.valid_moves)
 		print(self.board)
 		print(self.evaluate_position())
 
@@ -172,7 +172,6 @@ class Position:
 		for move in self.valid_moves:
 			newPos = deepcopy(self)
 			newPos.place_piece(move)
-			#newPos.print_board()
 			children.append(newPos)
 		return children
 
