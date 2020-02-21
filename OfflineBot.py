@@ -30,7 +30,6 @@ class Position:
 		print(self.board)
 
 	def place_piece(self,move,player):
-		move = text_to_coord(move)
 		self.board[move] = 1 if player == "d" else -1
 		self.flip(move, 1 if player == "d" else -1)
 		print("Board after move")      
@@ -157,13 +156,14 @@ def main(msg):
 		print(read())
 		print(read())
 	elif msg == "my move\n":
-		move = read()
+		move = text_to_coord(read())
 		print(move)
 		pos.place_piece(move,"d" if my_color == "w" else "w")
 		main(read())
 	elif msg == "your move\n":
 		move = "d6"
 		write(move)
+		move = text_to_coord(move)
 		pos.place_piece(move,"w" if my_color == "w" else "d")
 		main(read())
 	elif msg == "\"The game is finished\" White: \n":
