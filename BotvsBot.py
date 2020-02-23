@@ -1,24 +1,7 @@
 #!/usr/bin/env python
 
-from subprocess import Popen, PIPE
 from copy import deepcopy
 import numpy as np
-
-def read():
-	return process.stdout.readline().decode()
-
-def write(msg):
-	process.stdin.write(str.encode(msg + "\n"))
-	process.stdin.flush()
-	print(msg)
-
-def text_to_coord(text):
-	s = "abcdefgh"
-	return (int(text[1]) - 1,s.index(text[0]))
-
-def coord_to_text(coord):
-	s = "abcdefgh"
-	return s[coord[1]] + str(coord[0] + 1)
 
 def move_in_direction(r,c,direction):
 	if direction == 0: 
@@ -229,50 +212,31 @@ class Position:
 	def evaluate_position(self):
 		return np.sum(self.board)
 
-def main(msg):
-	print(msg)
-	if str(msg) == "hi! I am your othello server.\n":
-		write('da7308ca-s')
-		print(read())
-		print(read())
-		main(read())
-	elif msg == "choose colour, 'd' for dark, 'w' for white.\n":
-		write(my_color)
-		print(read())
-		main(read())
-	elif msg == "The game is finished\n":
-		print(read())
-		print(read())
-		print(read())
-	elif msg == "my move\n":
-		move = read()
-		print(move)
-		pos.place_piece(text_to_coord(move))
-		pos.print_board()
-		main(read())
-	elif msg == "your move\n":
-		_, move, _, _ = minimax(pos,depth,my_color == "d")
-		write(coord_to_text(move))
-		pos.place_piece(move)
-		pos.print_board()
-		main(read())
-	elif msg == "\"The game is finished\" White: \n":
-		print(read())
-		print(read())
-		print(read())
+def main():
+	position = Position()
+	position.print_board()
+	depth = 4
+	maximizingPlayer = True
+	total_visited_children = 0
+	total_branches_pruned = 0
+	while not position.game_over:
+		_, move, n_visited_children, n_pruned = minimax(position,depth,maximizingPlayer)
+		total_visited_children += n_visited_children
+		total_branches_pruned += n_pruned
+		position.place_piece(move)
+		position.print_board()
+		print("Visited",n_visited_children, "children and pruned", n_pruned, "branches in previous position")
+		maximizingPlayer = not maximizingPlayer
 	else:
-		print("Unknown response:")
-		print(read())
-		print(read())
-		print(read())
-		print(read())
-
-process = Popen("./othello", stdout=PIPE, stderr=PIPE, stdin=PIPE)
-my_color = "d"
-depth = 4
-pos = Position()
+		print("\nGame is over")
+		score = position.evaluate_position()
+		if score>0:
+			print("Black player won")
+		elif score<0:
+			print("White player won")
+		else:
+			print("It's a draw")
+		print("Visited",total_visited_children,"child positions and pruned",total_branches_pruned,"branches in total")
   
 if __name__== "__main__":
-	main(read())
-
-
+	main()
