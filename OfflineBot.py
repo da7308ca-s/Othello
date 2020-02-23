@@ -120,8 +120,11 @@ class Position:
 		self.flip(move)
 		self.player = -self.player
 		self.valid_moves = None
-		if np.count_nonzero(self.board) == 64 or len(self.get_valid_moves()) == 0:
+		if len(self.get_valid_moves()) == 0:
+			self.player = -self.player
+		if np.count_nonzero(self.board) == 64:
 			self.game_over = True
+
 
 	def flip(self,move,count_flips = False):
 		n_flips = 0
