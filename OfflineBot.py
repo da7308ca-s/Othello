@@ -125,6 +125,7 @@ class Position:
 		self.valid_moves = None
 		if len(self.get_valid_moves()) == 0:
 			self.player = -self.player
+			self.valid_moves = None
 		if np.count_nonzero(self.board) == 64:
 			self.game_over = True
 
