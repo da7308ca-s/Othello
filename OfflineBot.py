@@ -65,6 +65,7 @@ def minimax(position,depth,maximizingPlayer,pruning = True,alpha = -65,beta = 65
 	if depth == 0 or position.game_over == True:
 		return position.evaluate_position(), None, 0, 0
 	move = None
+	n_pruned = 0
 	n_visited_children = 0
 	if maximizingPlayer:
 		maxEval = -65
