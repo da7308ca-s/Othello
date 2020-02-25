@@ -255,6 +255,7 @@ def main(msg):
 		main(read())
 	elif msg == "your move\n":
 		_, move, _, _ = minimax(pos,depth,my_color == "d")
+		print(coord_to_text(move))
 		write(coord_to_text(move))
 		pos.place_piece(move)
 		pos.print_board()
