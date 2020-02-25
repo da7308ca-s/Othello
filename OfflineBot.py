@@ -273,7 +273,7 @@ def main(msg):
 		print(read())
 
 process = Popen("./othello", stdout=PIPE, stderr=PIPE, stdin=PIPE)
-my_color = "w"
+my_color = "d"
 depth = 1
 pos = Position()
   
