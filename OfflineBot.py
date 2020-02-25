@@ -261,10 +261,6 @@ def main(msg):
 		pos.place_piece(move)
 		pos.print_board()
 		main(read())
-	elif msg == '"The game is finished" White:':
-		print(read())
-		print(read())
-		print(read())
 	else:
 		print("Unknown response:")
 		print(read())
@@ -274,7 +270,7 @@ def main(msg):
 
 process = Popen("./othello", stdout=PIPE, stderr=PIPE, stdin=PIPE)
 my_color = "w"
-depth = 3
+depth = 4
 pos = Position()
   
 if __name__== "__main__":
