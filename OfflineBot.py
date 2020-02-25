@@ -79,6 +79,7 @@ def minimax(position,depth,maximizingPlayer,pruning = True,alpha = -65,beta = 65
 			if beta<=alpha and pruning:
 				n_pruned +=1
 				break
+		print("h1")
 		return maxEval, move, n_visited_children, n_pruned
 	else:
 		minEval = 65
@@ -92,6 +93,7 @@ def minimax(position,depth,maximizingPlayer,pruning = True,alpha = -65,beta = 65
 			if beta<=alpha and pruning:
 				n_pruned+=1
 				break
+		print("h2")
 		return minEval, move, n_visited_children, n_pruned
 
 class Position:
