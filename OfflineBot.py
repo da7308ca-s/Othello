@@ -275,8 +275,8 @@ def main(msg):
 		print(read())
 
 process = Popen("./othello", stdout=PIPE, stderr=PIPE, stdin=PIPE)
-my_color = "w"
-depth = 2
+my_color = "s"
+depth = 1
 pos = Position()
   
 if __name__== "__main__":
