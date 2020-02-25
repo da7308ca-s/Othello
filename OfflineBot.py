@@ -261,7 +261,7 @@ def main(msg):
 		pos.place_piece(move)
 		pos.print_board()
 		main(read())
-	elif msg == "\"The game is finished\" White: \n":
+	elif msg == '"The game is finished" White:':
 		print(read())
 		print(read())
 		print(read())
