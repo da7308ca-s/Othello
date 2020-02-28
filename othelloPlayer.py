@@ -34,7 +34,13 @@ def direction_chooser2(r,c,i,j):
 	l = []
 	for x in range(8):
 		d = (x + rc2dir[i,j])%8
-		l.append([(move_in_direction(r,c,d,k)) for k in range(1,8)])
+		ll = []
+		for k in range(1,8):
+			a,b = (move_in_direction(r,c,d,k))
+			if a>7 or a<0 or b>7 or b<0:
+				break
+			ll.append(a,b)
+		l.append(ll)
 	return l
 
 def minimax(position,depth,maximizingPlayer,pruning = True,alpha = -65,beta = 65):
@@ -147,19 +153,17 @@ class Position:
 								continue
 							x = ii+rr
 							y = jj+cc
-							if x>7 or x<0 or y>7 or y<0 or not self.board[x][y] == 0 or (x,y) in previously_evaluted: #skip if outside or previously 
+							 #skip if outside,not free or previously evealuated 
+							if x>7 or x<0 or y>7 or y<0 or not self.board[x][y] == 0 or (x,y) in previously_evaluted:
 								continue
 							previously_evaluted.append((x,y))
 							isValid = False
-							
-							for direction in direction_chooser2(x,y,ii,jj): #start checking in direction of opponents piece
+							for direction in direction_chooser2(x,y,-ii,-jj): #start checking in direction of opponents piece
 								if isValid:
 									break
 								hasOppositeColor = False
 								for r,c in direction: #traverse along an arm
-									if r>7 or r<0 or c>7 or c<0:
-										break
-									elif self.board[r][c] == 0:
+									if self.board[r][c] == 0:
 										break
 									elif self.board[r][c] == -self.player:
 										hasOppositeColor = True
@@ -167,30 +171,6 @@ class Position:
 										if hasOppositeColor:
 											isValid = True
 										break
-									else:
-										print("wtf")
-							"""
-							for direction in direction_chooser(ii,jj):
-								if isValid:
-									break
-								r = x
-								c = y
-								hasOppositeColor = False
-								for i in range(7):
-									r,c = move_in_direction(r,c,direction)
-									if r>7 or r<0 or c>7 or c<0:
-										break
-									elif self.board[r][c] == 0:
-										break
-									elif self.board[r][c] == -self.player:
-										hasOppositeColor = True
-									elif self.board[r][c] == self.player:
-										if hasOppositeColor:
-											isValid = True
-										break
-									else:
-										print("wtf")
-							"""
 							if isValid:
 								valid_moves.append((x,y))
 		return self.sort_moves_by_flips(valid_moves)
@@ -269,11 +249,6 @@ def main(msg):
 if __name__== "__main__":
 	print("rc2dir")
 	print(rc2dir)
-	for i in range(-1,2):
-		for j in range(-1,2):
-			pass
-			#print("i j", i , j, rc2dir[i,j])
-			#print(direction_chooser2(0,0,i,j))
 	process = Popen("./othello", stdout=PIPE, stderr=PIPE, stdin=PIPE)
 	my_color = "w"
 	depth = 4
