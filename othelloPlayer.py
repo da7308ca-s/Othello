@@ -162,9 +162,6 @@ class Position:
 							if x>7 or x<0 or y>7 or y<0 or not self.board[x][y] == 0 or (x,y) in valid_moves:
 								continue
 							isValid = False
-							start_direction = direction_chooser2(ii,jj)
-							for k in range(8):
-								direction = (k+start_direction)%8
 							for direction in direction_chooser(ii,jj):
 								if isValid:
 									break
