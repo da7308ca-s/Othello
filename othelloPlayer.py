@@ -28,7 +28,7 @@ def move_in_direction(r,c,d,i=1):
 	return r + dir2rc[d][0]*i, c + dir2rc[d][1]*i
 
 def direction_chooser(i,j):
-	return [(x + rc2dir[i,j])%8 for x in range(8)]
+	return [(x + rc2dir[i,j])%8 for x in range(9)]
 
 def direction_chooser2(r,c,i,j):
 	l = []
@@ -151,10 +151,11 @@ class Position:
 								continue
 							previously_evaluted.append((x,y))
 							isValid = False
-							"""
+							
 							for direction in direction_chooser2(x,y,ii,jj): #start checking in direction of opponents piece
 								if isValid:
 									break
+								hasOppositeColor = False
 								for r,c in direction: #traverse along an arm
 									if r>7 or r<0 or c>7 or c<0:
 										break
@@ -189,6 +190,7 @@ class Position:
 										break
 									else:
 										print("wtf")
+							"""
 							if isValid:
 								valid_moves.append((x,y))
 		return self.sort_moves_by_flips(valid_moves)
