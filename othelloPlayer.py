@@ -24,39 +24,18 @@ def coord_to_text(coord):
 	return s[coord[1]] + str(coord[0] + 1)
 
 #move a coordinate on the board where up is zero and oriented clock-wise
-def move_in_direction(r,c,d):
-	return r + dir2rc[d][0], c + dir2rc[d][1]
-	if direction == 0: 
-		r-=1
-	elif direction == 1:
-		r-=1
-		c+=1
-	elif direction == 2:
-		c+=1
-	elif direction == 3:
-		r+=1
-		c+=1
-	elif direction == 4:
-		r+=1
-	elif direction == 5:
-		r+=1
-		c-=1
-	elif direction == 6:
-		c-=1
-	elif direction == 7:
-		r-=1
-		c-=1
-	return r,c
+def move_in_direction(r,c,d,i=1):
+	return r + dir2rc[d][0]*i, c + dir2rc[d][1]*i
 
 def direction_chooser(i,j):
 	return [(x + rc2dir[i,j])%8 for x in range(8)]
 
-def direction_chooser2(i,j):
+def direction_chooser2(r,c,i,j):
 	l = []
-	for d in range(8):
-		x = (d + rc2dir[i,j])%8
-		
-	return [(x + rc2dir[i,j])%8 for x in range(8)]
+	for x in range(8):
+		d = (x + rc2dir[i,j])%8
+		l.append([(move_in_direction(r,c,d,k)) for k in range(1,8)])
+	return l
 
 def minimax(position,depth,maximizingPlayer,pruning = True,alpha = -65,beta = 65):
 	if depth == 0 or position.game_over == True:
@@ -158,18 +137,35 @@ class Position:
 
 	def calculate_valid_moves(self):
 		valid_moves = []
-		for rr in range(8):
+		previously_evaluted = []
+		for rr in range(8): #Loop over board
 			for cc in range(8):
-				if self.board[rr][cc] == -self.player:
-					for ii in range(-1,2):
-						for jj in range(-1,2):
-							if ii == 0 and jj == 0:
+				if self.board[rr][cc] == -self.player: #only check opponents pieces
+					for ii in range(-1,2): 
+						for jj in range(-1,2): #check pieces surrounding opponents
+							if ii == 0 and jj == 0: #skip center
 								continue
 							x = ii+rr
 							y = jj+cc
-							if x>7 or x<0 or y>7 or y<0 or not self.board[x][y] == 0 or (x,y) in valid_moves:
+							if x>7 or x<0 or y>7 or y<0 or not self.board[x][y] == 0 or (x,y) in previously_evaluted: #skip if outside or previously 
 								continue
+							previously_evaluted.append((x,y))
 							isValid = False
+							for direction in direction_chooser2(x,y,ii,jj): #start checking in direction of opponents piece
+								for r,c in direction: #traverse along an arm
+									if r>7 or r<0 or c>7 or c<0:
+										break
+									elif self.board[r][c] == 0:
+										break
+									elif self.board[r][c] == -self.player:
+										hasOppositeColor = True
+									elif self.board[r][c] == self.player:
+										if hasOppositeColor:
+											isValid = True
+										break
+									else:
+										print("wtf")
+							"""
 							for direction in direction_chooser(ii,jj):
 								if isValid:
 									break
@@ -190,6 +186,7 @@ class Position:
 										break
 									else:
 										print("wtf")
+							"""
 							if isValid:
 								valid_moves.append((x,y))
 		return self.sort_moves_by_flips(valid_moves)
@@ -270,8 +267,8 @@ if __name__== "__main__":
 	print(rc2dir)
 	for i in range(-1,2):
 		for j in range(-1,2):
-			print("i j", i , j, rc2dir[i,j])
-			print(direction_chooser(i,j))
+			#print("i j", i , j, rc2dir[i,j])
+			#print(direction_chooser2(0,0,i,j))
 	process = Popen("./othello", stdout=PIPE, stderr=PIPE, stdin=PIPE)
 	my_color = "w"
 	depth = 4
