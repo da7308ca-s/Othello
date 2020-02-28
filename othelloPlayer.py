@@ -4,6 +4,9 @@ from subprocess import Popen, PIPE
 from copy import deepcopy
 import numpy as np
 
+rc2dir = np.array([[7,0,1],[6,8,2],[5,4,3]])
+print(rc2dir)
+
 def read():
 	return process.stdout.readline().decode()
 
@@ -20,6 +23,7 @@ def coord_to_text(coord):
 	s = "abcdefgh"
 	return s[coord[1]] + str(coord[0] + 1)
 
+#move a coordinate on the board where up is zero and oriented clock-wise
 def move_in_direction(r,c,direction):
 	if direction == 0: 
 		r-=1
@@ -42,6 +46,31 @@ def move_in_direction(r,c,direction):
 		r-=1
 		c-=1
 	return r,c
+
+def drdc2dir(i,j):
+	swith(i):
+		case -1: switch(j):
+				case -1: return 7
+					break;
+				case 0: return 0
+					break;
+				case 1: return 1
+					break;
+			break;
+		case 0: switch(j):
+				case -1: return 6
+					break;
+				case 1: return 2
+					break; 
+			break;
+		case 1: switch(j):
+				case -1: return 5
+					break;
+				case 0: return 4
+					break;
+				case 1: return 3
+					break;
+			break;
 
 def direction_chooser(i,j):
 	if i == 1 and j == 0:
@@ -267,13 +296,12 @@ def main(msg):
 		print(read())
 		print(read())
 		print(read())
-
-process = Popen("./othello", stdout=PIPE, stderr=PIPE, stdin=PIPE)
-my_color = "w"
-depth = 4
-pos = Position()
   
 if __name__== "__main__":
+	process = Popen("./othello", stdout=PIPE, stderr=PIPE, stdin=PIPE)
+	my_color = "w"
+	depth = 4
+	pos = Position()	
 	main(read())
 
 
