@@ -151,7 +151,7 @@ class Position:
 								continue
 							previously_evaluted.append((x,y))
 							isValid = False
-														"""
+							"""
 							for direction in direction_chooser2(x,y,ii,jj): #start checking in direction of opponents piece
 								if isValid:
 									break
