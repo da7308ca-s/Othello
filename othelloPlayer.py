@@ -4,8 +4,8 @@ from subprocess import Popen, PIPE
 from copy import deepcopy
 import numpy as np
 
-rc2dir = np.array([[7,0,1],[6,8,2],[5,4,3]])
-print(rc2dir)
+rc2dir = np.array([[8,2,6],[4,3,5],[0,1,7]])
+dir2rc = np.array([[-1,0],[-1,1],[0,1],[1,1],[0,1],[1,-1],[0,-1],[-1,-1]])
 
 def read():
 	return process.stdout.readline().decode()
@@ -47,48 +47,8 @@ def move_in_direction(r,c,direction):
 		c-=1
 	return r,c
 
-def drdc2dir(i,j):
-	swith(i):
-		case -1: switch(j):
-				case -1: return 7
-					break;
-				case 0: return 0
-					break;
-				case 1: return 1
-					break;
-			break;
-		case 0: switch(j):
-				case -1: return 6
-					break;
-				case 1: return 2
-					break; 
-			break;
-		case 1: switch(j):
-				case -1: return 5
-					break;
-				case 0: return 4
-					break;
-				case 1: return 3
-					break;
-			break;
-
 def direction_chooser(i,j):
-	if i == 1 and j == 0:
-		return range(8)
-	if i == 1 and j == -1:
-		return [1,2,3,4,5,6,7,0]
-	if i == 0 and j == -1:
-		return [2,3,4,5,6,7,0,1]
-	if i == -1 and j == -1:
-		return [3,4,5,6,7,0,1,2]
-	if i == -1 and j == 0:
-		return [4,5,6,7,0,1,2,3]
-	if i == -1 and j == 1:
-		return [5,6,7,0,1,2,3,4]
-	if i == 0 and j == 1:
-		return [6,7,0,1,2,3,4,5]
-	if i == 1 and j == 1:
-		return [7,0,1,2,3,4,5,6]
+	return [(x + rc2dir[i,j])%8 for x in range(8)]
 
 def minimax(position,depth,maximizingPlayer,pruning = True,alpha = -65,beta = 65):
 	if depth == 0 or position.game_over == True:
@@ -202,6 +162,9 @@ class Position:
 							if x>7 or x<0 or y>7 or y<0 or not self.board[x][y] == 0 or (x,y) in valid_moves:
 								continue
 							isValid = False
+							start_direction = direction_chooser2(ii,jj)
+							for k in range(8):
+								direction = (k+start_direction)%8
 							for direction in direction_chooser(ii,jj):
 								if isValid:
 									break
@@ -298,10 +261,16 @@ def main(msg):
 		print(read())
   
 if __name__== "__main__":
+	print("rc2dir")
+	print(rc2dir)
+	for i in range(-1,2):
+		for j in range(-1,2):
+			print("i j", i , j, rc2dir[i,j])
+			print(direction_chooser(i,j))
 	process = Popen("./othello", stdout=PIPE, stderr=PIPE, stdin=PIPE)
 	my_color = "w"
 	depth = 4
-	pos = Position()	
+	pos = Position()
 	main(read())
 
 
