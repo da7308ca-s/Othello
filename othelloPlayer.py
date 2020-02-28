@@ -24,7 +24,8 @@ def coord_to_text(coord):
 	return s[coord[1]] + str(coord[0] + 1)
 
 #move a coordinate on the board where up is zero and oriented clock-wise
-def move_in_direction(r,c,direction):
+def move_in_direction(r,c,d):
+	return r + dir2rc[d][0], c + dir2rc[d][1]
 	if direction == 0: 
 		r-=1
 	elif direction == 1:
@@ -48,6 +49,13 @@ def move_in_direction(r,c,direction):
 	return r,c
 
 def direction_chooser(i,j):
+	return [(x + rc2dir[i,j])%8 for x in range(8)]
+
+def direction_chooser2(i,j):
+	l = []
+	for d in range(8):
+		x = (d + rc2dir[i,j])%8
+		
 	return [(x + rc2dir[i,j])%8 for x in range(8)]
 
 def minimax(position,depth,maximizingPlayer,pruning = True,alpha = -65,beta = 65):
