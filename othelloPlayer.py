@@ -267,6 +267,7 @@ if __name__== "__main__":
 	print(rc2dir)
 	for i in range(-1,2):
 		for j in range(-1,2):
+			pass
 			#print("i j", i , j, rc2dir[i,j])
 			#print(direction_chooser2(0,0,i,j))
 	process = Popen("./othello", stdout=PIPE, stderr=PIPE, stdin=PIPE)
