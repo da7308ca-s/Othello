@@ -39,7 +39,7 @@ def direction_chooser2(r,c,i,j):
 			a,b = (move_in_direction(r,c,d,k))
 			if a>7 or a<0 or b>7 or b<0:
 				break
-			ll.append(a,b)
+			ll.append((a,b))
 		l.append(ll)
 	return l
 
