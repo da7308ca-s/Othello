@@ -151,7 +151,10 @@ class Position:
 								continue
 							previously_evaluted.append((x,y))
 							isValid = False
+														"""
 							for direction in direction_chooser2(x,y,ii,jj): #start checking in direction of opponents piece
+								if isValid:
+									break
 								for r,c in direction: #traverse along an arm
 									if r>7 or r<0 or c>7 or c<0:
 										break
@@ -186,7 +189,6 @@ class Position:
 										break
 									else:
 										print("wtf")
-							"""
 							if isValid:
 								valid_moves.append((x,y))
 		return self.sort_moves_by_flips(valid_moves)
