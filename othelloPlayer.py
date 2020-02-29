@@ -1,11 +1,17 @@
 #!/usr/bin/env python
-
+import sys
 from subprocess import Popen, PIPE
 from copy import deepcopy
 import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
+import time
+import random
+from termcolor import colored
 
 rc2dir = np.array([[8,2,6],[4,3,5],[0,1,7]])
-dir2rc = np.array([[-1,0],[-1,1],[0,1],[1,1],[0,1],[1,-1],[0,-1],[-1,-1]])
+dir2rc = np.array([[-1,0],[-1,1],[0,1],[1,1],[1,0],[1,-1],[0,-1],[-1,-1]])
+RC = np.array([[(y,x) for x in range(8)] for y in range(8)])
 
 def read():
 	return process.stdout.readline().decode()
@@ -27,10 +33,7 @@ def coord_to_text(coord):
 def move_in_direction(r,c,d,i=1):
 	return r + dir2rc[d][0]*i, c + dir2rc[d][1]*i
 
-def direction_chooser(i,j):
-	return [(x + rc2dir[i,j])%8 for x in range(9)]
-
-def direction_chooser2(r,c,i,j):
+def direction_chooser(r,c,i =-1,j=0):
 	l = []
 	for x in range(8):
 		d = (x + rc2dir[i,j])%8
@@ -74,7 +77,7 @@ def minimax(position,depth,maximizingPlayer,pruning = True,alpha = -65,beta = 65
 			if beta<=alpha and pruning:
 				n_pruned+=1
 				break
-		return minEval, move, n_visited_children, n_pruned
+		return minEval, move, n_visited_children, n_pruned*n_pruned_multiplier
 
 class Position:
 	def __init__(self):
@@ -87,15 +90,38 @@ class Position:
 		self.valid_moves = None
 		self.last_move = None
 		self.game_over = False
+		self.winner = "None"
 
 	def print_board(self):
 		player = "Black" if self.player == 1 else "White"
-		print()
-		print(player, "to move")
-		print(self.board)
-		print("Last move",self.last_move)
-		print("Valid moves in position", self.get_valid_moves())
-		print("Current Evaluation:", self.evaluate_position())
+		text = "Playing as "+player+" minimax depth search set to " + str(depth) 
+		print("# A B C D E F G H # "+text)
+		for i in range(8):
+			text = str(i+1)+" "
+			for j in range(8):
+				t = "  "
+				if (i,j) in self.get_valid_moves():
+					t = "* "
+				if self.board[i][j] == 1:
+					t = colored("D ","red")
+				if self.board[i][j] == -1:
+					t = colored("W ","green")
+				text+=t
+			text += str(i+1) + " "
+			if i == 1:
+				text += str(player) +" to move Move# " + str(move_counter)
+			if i == 3 and self.last_move is not None:
+				text += "Last move: " + str(coord_to_text(self.last_move))
+				if self.player == 1 and my_color=="d" or self.player == -1 and my_color == "w":
+					text += " (computation time: "+str(last_move_time)+ ")"
+			if i == 5:
+				text += "Valid moves (*): "
+				for x in self.get_valid_moves():
+					text += coord_to_text(x) + " "
+			if i == 7:
+				text += "Evaluation: " + str(self.evaluate_position()) + " Foresight: " + str(foresight)
+			print(text)
+		print("# A B C D E F G H #")
 
 	def place_piece(self,move):
 		self.last_move = move
@@ -103,12 +129,17 @@ class Position:
 		self.flip(move)
 		self.player = -self.player
 		self.valid_moves = None
+		bothNoMoves = False
 		if len(self.get_valid_moves()) == 0:
 			self.player = -self.player
 			self.valid_moves = None
-		if np.count_nonzero(self.board) == 64:
+			if len(self.get_valid_moves()) == 0:
+				bothNoMoves = True
+		if np.count_nonzero(self.board) == 64 or bothNoMoves:
 			self.game_over = True
-
+			self.winner = "Black" if self.evaluate_position()>0 else "White"
+			if self.evaluate_position() == 0:
+				self.winner = "Tie"
 
 	def flip(self,move,count_flips = False):
 		n_flips = 0
@@ -142,6 +173,7 @@ class Position:
 		return self.valid_moves
 
 	def calculate_valid_moves(self):
+		t = time.time()
 		valid_moves = []
 		previously_evaluted = []
 		for rr in range(8): #Loop over board
@@ -153,12 +185,15 @@ class Position:
 								continue
 							x = ii+rr
 							y = jj+cc
-							 #skip if outside,not free or previously evealuated 
+							 #skip if outside,not free or previously evaluated 
 							if x>7 or x<0 or y>7 or y<0 or not self.board[x][y] == 0 or (x,y) in previously_evaluted:
 								continue
 							previously_evaluted.append((x,y))
+							if self.flip((x,y),True) > 0:
+								valid_moves.append((x,y))
+							break;
 							isValid = False
-							for direction in direction_chooser2(x,y,-ii,-jj): #start checking in direction of opponents piece
+							for direction in direction_chooser(x,y,-ii,-jj): #start checking in direction of opponents piece
 								if isValid:
 									break
 								hasOppositeColor = False
@@ -173,32 +208,33 @@ class Position:
 										break
 							if isValid:
 								valid_moves.append((x,y))
-		return self.sort_moves_by_flips(valid_moves)
+		global ftime
+		ftime+=time.time()-t
+		return self.sort_moves(valid_moves)
 
-	def sort_moves_by_distance(self, moves):
+	def sort_moves(self, moves, sort = "distance"):
 		sorted_moves = []
-		while not len(moves) == 0:
-			longest_dist = 0
-			for x,y in moves:
-				dist = np.sqrt((x-3.5)**2+(y-3.5)**2)
-				if dist>longest_dist:
-					longest_dist = dist
-					move = (x,y)
-			moves.remove(move)
-			sorted_moves.append(move)
-		return sorted_moves
-
-	def sort_moves_by_flips(self,moves):
-		sorted_moves = []
-		while not len(moves) == 0:
-			most_flips = 0
-			for m in moves:
-				flips = self.flip(m,True)
-				if flips>most_flips:
-					most_flips = flips
-					move = m
-			moves.remove(move)
-			sorted_moves.append(move)
+		if sort == "distance":
+			while not len(moves) == 0:
+				longest_dist = 0
+				for x,y in moves:
+					dist = np.sqrt((x-3.5)**2+(y-3.5)**2)
+					if dist>longest_dist:
+						longest_dist = dist
+						move = (x,y)
+				moves.remove(move)
+				sorted_moves.append(move)
+		else:
+			while not len(moves) == 0:
+				most_flips = 0
+				for m in moves:
+					flips = self.flip(m,True)
+					if flips>most_flips:
+						most_flips = flips
+						move = m
+				moves.remove(move)
+				sorted_moves.append(move)
+		global ftime
 		return sorted_moves
 
 	def get_children(self):
@@ -212,47 +248,134 @@ class Position:
 	def evaluate_position(self):
 		return np.sum(self.board)
 
-def main(msg):
-	print(msg)
-	if str(msg) == "hi! I am your othello server.\n":
+def main(msg,d=0):
+	if d>5:
+		print("Error")
+		return
+	if msg == "hi! I am your othello server.\n":
+		print(msg)
 		write('da7308ca-s')
 		print(read())
 		print(read())
 		main(read())
 	elif msg == "choose colour, 'd' for dark, 'w' for white.\n":
+		print(msg)
 		write(my_color)
 		print(read())
+		if verbose: 
+			for i in range(9):
+				print(read())
 		main(read())
 	elif msg == "The game is finished\n":
+		print(msg)
 		print(read())
 		print(read())
 		print(read())
 	elif msg == "my move\n":
+		print(msg)
 		move = read()
 		print(move)
 		pos.place_piece(text_to_coord(move))
+		global move_counter
+		move_counter+=1
 		pos.print_board()
+		if verbose: 
+			for i in range(9):
+				print(read())
 		main(read())
 	elif msg == "your move\n":
-		_, move, _, _ = minimax(pos,depth,my_color == "d")
+		print(msg)
+		global last_move_time, move_number, logs, foresight
+		if depth == 0:
+			move = random.choice(pos.get_valid_moves())
+			n_visited_children = 0
+			n_pruned = 0
+			foresight = 0
+			last_move_time=0
+		else:
+			t1 = time.time()
+			foresight, move, n_visited_children, n_pruned = minimax(pos,depth,my_color == "d")
+			t2 = time.time()
+			last_move_time=t2-t1
+		logs[0][game_number].append(n_visited_children)
+		logs[1][game_number].append(n_pruned)
+		logs[2][game_number].append(last_move_time)
+		logs[3][game_number].append(foresight)
+		logs[4][game_number].append(pos.evaluate_position())
 		write(coord_to_text(move))
 		pos.place_piece(move)
+		global move_counter
+		move_counter+=1
 		pos.print_board()
+		if verbose: 
+			for i in range(9):
+				print(read())
 		main(read())
+	elif "The game is finished" in msg:
+		print("The game is finished. White: " + read().replace("\n","") + read().replace("\n",""))
+		global results
+		text = "Winner:" + pos.winner + ", Final score: " + str(pos.evaluate_position())
+		results.append(text)
+		print(read())
 	else:
 		print("Unknown response:")
-		print(read())
-		print(read())
-		print(read())
-		print(read())
-  
-if __name__== "__main__":
-	print("rc2dir")
-	print(rc2dir)
-	process = Popen("./othello", stdout=PIPE, stderr=PIPE, stdin=PIPE)
-	my_color = "w"
-	depth = 4
+		print(msg)
+		main(read(),d+1)
+
+def play_game_against_computer():
+	t = time.time()
+	global game_number, process, pos, move_counter
+	move_counter = 1
+	process = Popen("./othello" if not verbose else "./verboseothello", stdout=PIPE, stderr=PIPE, stdin=PIPE)
 	pos = Position()
+	pos.print_board()
 	main(read())
+	game_number +=1
+	print("Game Time:",time.time()-t)
+ 
+if __name__== "__main__":
+	n_pruned_multiplier = 3
+	verbose = False
+	last_move_time = 0
+	colors = ["d","w"]
+	depths = [i+1 for i in range(3)]
+	game_number = 0
+	foresight = 0
+	move_counter = 1
+	ftime = 0
+	for i in range(1,len(sys.argv)):
+		if i == 1:
+			colors = [x for x in sys.argv[i]]
+		if i == 2:
+			depths = [int(x) for x in sys.argv[i]]
+	logs = [[[] for i in range(len(depths)*len(colors))]for j in range(5)]
+	results = []
+	for depth in depths:
+		for my_color in colors:
+				play_game_against_computer()
+	fig, axs = plt.subplots(len(depths),len(colors),sharex='col',sharey='row',figsize=(16,10),gridspec_kw={'hspace':0.15,'wspace':0.1})
+	patches = []
+	color_list=["red","blue","green","cyan","black"]
+	patches.append(mpatches.Patch(color="red",label="Number of visited children"))
+	patches.append(mpatches.Patch(color="blue",label="Number of pruned branches x"+str(n_pruned_multiplier)))
+	patches.append(mpatches.Patch(color="green",label="Computing time"))
+	patches.append(mpatches.Patch(color="cyan",label="Foresight evaluation"))
+	patches.append(mpatches.Patch(color="black",label="Current Evaluation"))
+	flat = [axs] if len(depths)*len(colors) == 1 else axs.flat
+	for i, ax in enumerate(flat):
+		if i == 0 and len(colors)==2:
+			ax.set_title("Black")
+		if i == 1 and len(colors)==2:
+			ax.set_title("White")
+		if i%len(colors) == 0:
+			ax.set(ylabel="Depth = "+str(depths[i/len(colors)]))
+		for j, values in enumerate(logs):
+			ax.plot([k for k in range(len(values[i]))],values[i],color=color_list[j])
+		ax.set(xlabel=results[i])
+	if len(depths)*len(colors) == 1:
+		ax.legend(handles=patches,loc="best")
+	print("Time: ",ftime)	
+	plt.show()
+
 
 
