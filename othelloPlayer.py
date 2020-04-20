@@ -191,7 +191,7 @@ class Position:
 							previously_evaluted.append((x,y))
 							if self.flip((x,y),True) > 0:
 								valid_moves.append((x,y))
-							break;
+								break;
 							isValid = False
 							for direction in direction_chooser(x,y,-ii,-jj): #start checking in direction of opponents piece
 								if isValid:
@@ -249,6 +249,7 @@ class Position:
 		return np.sum(self.board)
 
 def main(msg,d=0):
+	global move_counter
 	if d>5:
 		print("Error")
 		return
@@ -276,7 +277,7 @@ def main(msg,d=0):
 		move = read()
 		print(move)
 		pos.place_piece(text_to_coord(move))
-		global move_counter
+		
 		move_counter+=1
 		pos.print_board()
 		if verbose: 
@@ -304,7 +305,6 @@ def main(msg,d=0):
 		logs[4][game_number].append(pos.evaluate_position())
 		write(coord_to_text(move))
 		pos.place_piece(move)
-		global move_counter
 		move_counter+=1
 		pos.print_board()
 		if verbose: 
