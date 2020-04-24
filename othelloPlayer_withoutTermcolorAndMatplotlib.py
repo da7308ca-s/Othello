@@ -337,7 +337,7 @@ if __name__== "__main__":
 	verbose = False
 	last_move_time = 0
 	colors = ["d","w"]
-	depths = [i+1 for i in range(3)]
+	depths = [4]
 	game_number = 0
 	foresight = 0
 	move_counter = 1
