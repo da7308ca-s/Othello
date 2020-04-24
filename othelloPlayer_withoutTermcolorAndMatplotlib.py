@@ -336,7 +336,7 @@ if __name__== "__main__":
 	n_pruned_multiplier = 3
 	verbose = False
 	last_move_time = 0
-	colors = ["d","w"]
+	colors = ["d"]
 	depths = [4]
 	game_number = 0
 	foresight = 0
