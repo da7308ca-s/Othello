@@ -352,7 +352,7 @@ if __name__== "__main__":
 	for depth in depths:
 		for my_color in colors:
 				play_game_against_computer()
-
+	"""
 	fig, axs = plt.subplots(len(depths),len(colors),sharex='col',sharey='row',figsize=(16,10),gridspec_kw={'hspace':0.15,'wspace':0.1})
 	patches = []
 	color_list=["red","blue","green","cyan","black"]
@@ -376,6 +376,7 @@ if __name__== "__main__":
 		ax.legend(handles=patches,loc="best")
 	print("Time: ",ftime)	
 	plt.show()
+	"""
 
 
 
